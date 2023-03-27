@@ -8,6 +8,7 @@ from requests import get
 from time import sleep
 import sys
 from os import path
+from threading import Thread
 
 # url = https://content.videvo.net/videvo_files/video/free/2014-07/originalContent/Abstract_ball_lines.mp4
 # video = https://www.youtube.com/watch?v=2bRRbD6pSeg
@@ -62,7 +63,7 @@ class VideoDownloader(QWidget):
         self.browseLocation.clicked.connect(self.browse)
         self.browsePlaylistLocation.clicked.connect(self.browsePlaylist)
 
-        self.download.clicked.connect(self.downloadVideo)
+        self.download.clicked.connect(self.downloadYoutubeVideo)
         self.downloadPlaylist.clicked.connect(self.playlistDownloader)
         self.downloadSimpleVideo.clicked.connect(self.downloadSVideo)
 
@@ -113,6 +114,10 @@ class VideoDownloader(QWidget):
         except Exception as e:
             QMessageBox.warning(self,"Error",str(e))
             
+
+    def downloadYoutubeVideo(self):
+        self.myThread = Thread(target=self.downloadVideo)
+        self.myThread.start() 
             
     def videoContent(self):
         try:
